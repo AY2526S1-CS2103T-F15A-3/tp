@@ -53,7 +53,8 @@
         "user-stories": "User stories",
         "use-cases": "Use cases",
         "non-functional-requirements": "Non-Functional Requirements",
-        "glossary": "Glossary"
+        "glossary": "Glossary",
+        "find-command-multi-criteria-search-and-amp-allowed-tag-validation": "Find command — multi-criteria search &amp; allowed-tag validation"
       },
       "headingKeywords": {}
     },
