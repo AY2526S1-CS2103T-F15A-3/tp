@@ -48,17 +48,24 @@ The bulk of the app's work is done by the following four components:
 The next meeting information is modelled as a dedicated value object (`seedu.address.model.person.NextMeeting`) so that validation, defaults, and equality checks stay consistent across the code base.
 
 **Parsing workflow**
-- `CliSyntax.PREFIX_NEXT_MEETING (m/)` marks the optional input.
-- `AddCommandParser` falls back to `NextMeeting.DEFAULT_VALUE` (`"No meeting scheduled"`) when the prefix is absent, while `ParserUtil.parseNextMeeting` trims and validates non-empty input.
-- `EditCommandParser` maps the prefix into `EditCommand.EditPersonDescriptor`, enabling partial updates during `edit`.
+1. The `LogicManager` receives the raw command string and delegates it to the relevant parser (e.g., `AddCommandParser` or `EditCommandParser`).
+2. The parser retrieves the argument mapped to `CliSyntax.PREFIX_NEXT_MEETING (m/)` and passes it to `ParserUtil.parseNextMeeting`.
+3. `ParserUtil` trims whitespace, validates the string format, and constructs a `NextMeeting` object.
+4. The resulting `NextMeeting` is stored in the corresponding command descriptor (e.g., `EditCommand.EditPersonDescriptor`) and later passed to the `Model` for execution.
+   * `AddCommandParser` falls back to `NextMeeting.DEFAULT_VALUE` ("No meeting scheduled") when the prefix is absent, while `ParserUtil.parseNextMeeting` ensures invalid input (such as empty strings) is rejected before command creation.
+   * `EditCommandParser` maps the prefix into the descriptor to enable partial updates during `edit`.
 
 **Model and storage**
-- `Person` stores a `NextMeeting` instance alongside existing identity and data fields.
-- `JsonAdaptedPerson` serialises/deserialises the value, substituting the default string when the JSON omits the field so older save files continue to load.
-- `SampleDataUtil` provides illustrative values so that the UI demonstrates the field out of the box.
+
+During execution, the `Model` layer applies the update to the selected `Person` object:
+
+1. `AddCommand` or `EditCommand` calls `Model#setPerson`, replacing the old instance with a new `Person` containing the updated `NextMeeting`.
+2. `ModelManager` then triggers `StorageManager#saveAddressBook` to persist the updated state.
+3. `JsonAdaptedPerson` serialises the `NextMeeting` into JSON; if the field is missing in older save files, it substitutes the default value to maintain backward compatibility.
+4. `SampleDataUtil` provides illustrative values so that the UI demonstrates the field out of the box.
 
 **UI**
-- `PersonCard` now renders a `nextMeeting` label inside `PersonListCard.fxml`, showing `Next meeting: <value>` so users can see at-a-glance follow-up details.
+1. PersonCard` now renders a `nextMeeting` label inside `PersonListCard.fxml`, showing `Next meeting: <value>` so users can see at-a-glance follow-up details.
 
 > **Scope decision (v1.5):** We experimented with a richer `Meeting` aggregate in v1.4 but removed it after integration issues. Keeping `NextMeeting` as a single value object lets us ship a reliable reminder while we refine the structured design for a later release.
 
