@@ -19,7 +19,7 @@ See [Developer Guide → Appendix: Requirements → Target user profile](Develop
 
 ## Table of Contents
 
-<!-- * Table of Contents -->
+<!-- * Table of Contents  -->
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
