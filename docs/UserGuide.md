@@ -319,7 +319,7 @@ Use `addtag t/TAG` to add new tags, or `listtag` to view existing ones.
 * `find c/Google` → all at Google
 * `find c/Google c/Microsoft` → at Google **or** Microsoft
 * `find alice t/priority c/Microsoft` → “alice” **and** `priority` **and** “Microsoft”
-
+<!-- * No relevant hyperlinks found -->
 ![Find Command](images/FindCommand.png)
 
 
